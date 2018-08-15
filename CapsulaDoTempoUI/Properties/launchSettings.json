@@ -3,7 +3,7 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:50743/",
+      "applicationUrl": "http://localhost:63329/",
       "sslPort": 0
     }
   },
@@ -11,19 +11,17 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "api/capsulasDoTempo",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "CapsulaDoTempo": {
+    "CapsulaDoTempoUI": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "api/capsulasDoTempo",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "http://localhost:50744/"
+      "applicationUrl": "http://localhost:63330/"
     }
   }
 }

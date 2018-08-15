@@ -1,0 +1,18 @@
+﻿@model CapsulaDoTempoViewModel
+@{
+  ViewData["Title"] = "Capsula Do Tempo";
+}
+
+
+@using (Html.BeginForm("CriarCapsula", "Home", FormMethod.Post))
+{
+  @Html.TextBoxFor(m => m.Mensagem)
+  @Html.TextBoxFor(m => m.DataAbertura)
+
+  <label for="file">Imagem:</label>
+  <input type="file" name="Imagem" id="Imagem" style="width: 100%;" />
+
+
+  <input type="submit" value="Salvar" />
+}
+
