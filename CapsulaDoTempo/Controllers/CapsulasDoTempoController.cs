@@ -44,10 +44,15 @@ namespace CapsulaDoTempo.Controllers
       }
     }
 
-    [HttpPost]
-    public async Task<ActionResult> Post([FromBody]Modelo.CapsulaDoTempo capsula)
+    [HttpPost("{id}")]
+    public async Task<ActionResult> Post(string id, [FromBody]Modelo.CapsulaDoTempo capsula)
     {
+      capsula.Id = id;
+      capsula.DataCriacao = DateTime.Now;
+      
+
       var c = await repositorio.RecuperarCapsula(capsula.Id);
+
       if (c == null)
       {
         await repositorio.SalvarCapsula(capsula);

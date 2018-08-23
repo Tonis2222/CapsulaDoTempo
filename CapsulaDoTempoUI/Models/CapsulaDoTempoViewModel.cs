@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -16,6 +17,6 @@ namespace CapsulaDoTempoUI.Models
     public string Mensagem { get; set; }
 
     [DataType(DataType.Upload)]
-    public string Imagem { get; set; }
+    public IFormFile Imagem { get; set; }
   }
 }
