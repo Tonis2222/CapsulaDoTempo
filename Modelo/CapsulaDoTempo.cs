@@ -9,6 +9,7 @@ namespace Modelo
     public DateTime DataAbertura { get; set; }
     public string Mensagem { get; set; }
     public string Imagem { get; set; }
+    public DuracaoCapsula Duracao { set; get; }
 
     public EstadoCapsula CalcularEstadoCapsula()
     {
@@ -22,8 +23,44 @@ namespace Modelo
 
     public DateTime CalcularDataExpiracao()
     {
-      return DataAbertura + (DataAbertura - DataCriacao);
+
+      switch (Duracao)
+      {
+        case DuracaoCapsula.UmDia:
+          return DataAbertura.AddDays(1);
+        case DuracaoCapsula.UmaSemana:
+          return DataAbertura.AddDays(7);
+        case DuracaoCapsula.UmMes:
+          return DataAbertura.AddMonths(1);
+        case DuracaoCapsula.UmAno:
+          return DataAbertura.AddYears(1);
+        default:
+          throw new ArgumentOutOfRangeException("Duracao");
+      }
     }
 
+    public bool ValidarCriacao(out string msgErro)
+    {
+      msgErro = string.Empty;
+
+      if (string.IsNullOrEmpty(Id))
+      {
+        msgErro = "Id não informado.";
+        return false;
+      }
+
+      if (DataAbertura < DateTime.Now)
+      {
+        msgErro = "A data de abertura deve uma data futura.";
+        return false;
+      }
+
+      if (Mensagem?.Length > 1000)
+      {
+        msgErro = "A mensagem deve ter no máximo 1000 caracteres";
+      }
+      
+      return true;
+    }
   }
 }

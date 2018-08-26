@@ -9,14 +9,18 @@ namespace CapsulaDoTempoUI.Models
 {
   public class CapsulaDoTempoViewModel
   {
-    public string Id { get; set; }
-    public DateTime DataCriacao { get; set; }
-
+    [Display(Name = "Data de Abertura")]
     [DataType(DataType.Date)]
     public DateTime DataAbertura { get; set; }
+
+    [Display(Name = "Duração da Capsula")]
+    public DuracaoCapsula Duracao { get; set; }
+
     public string Mensagem { get; set; }
 
     [DataType(DataType.Upload)]
     public IFormFile Imagem { get; set; }
+
+    public string ImagemStr { get; set; }
   }
 }

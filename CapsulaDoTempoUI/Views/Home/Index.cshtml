@@ -1,41 +1,5 @@
-﻿@model CapsulaDoTempoViewModel
-@{
-  ViewData["Title"] = "Capsula Do Tempo";
+﻿@{
+ Layout = "_Layout";
+    ViewData["Title"] = "Manual Capsula do Tempo";
 }
-
-
-@using (Html.BeginForm("CriarCapsula", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
-{
-
-  <div class="row">
-    <div class='col-md-2'>
-      <div class="form-group">
-        @Html.LabelFor(m => m.DataAbertura, new { @for = "txtDataAbertura" })
-        @Html.TextBoxFor(m => m.DataAbertura, new { @class = "form-control datepicker", @id = "txtDataAbertura" })
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class='col-md-6'>
-      <div class="form-group">
-        @Html.LabelFor(m => m.Mensagem, new { @for = "txtMensagem" })
-        @Html.TextBoxFor(m => m.Mensagem, new { @class = "form-control", @id = "txtMensagem" })
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class='col-md-6'>
-      <div class="form-group">
-        @Html.LabelFor(m => m.Imagem, new { @for = "txtImagem" })
-        @Html.TextBoxFor(m => m.Imagem, new { @class = "form-control", @id = "txtImagem", @type = "file" })
-      </div>
-    </div>
-  </div>
-  <input type="submit" value="Salvar" class="btn btn-primary" />
-}
-
-<script type="text/javascript">
-  $(function () {
-    $('.datepicker').datepicker();
-  });
-</script>
+<h2>Como Funciona</h2>

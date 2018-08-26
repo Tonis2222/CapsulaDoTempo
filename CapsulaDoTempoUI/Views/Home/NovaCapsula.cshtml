@@ -1,0 +1,54 @@
+﻿@model CapsulaDoTempoViewModel
+@{
+  Layout = "_Layout";
+  ViewData["Title"] = "Capsula Do Tempo";
+}
+
+<div class="row">
+  <h2>Criar nova capsula</h2>
+</div>
+@using (Html.BeginForm("CriarCapsula", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+  <div class="row">
+    <div class='col-md-2'>
+      <div class="form-group">
+        @Html.LabelFor(m => m.DataAbertura, new { @for = "txtDataAbertura", @class = "tituloCampo" })
+        @Html.TextBoxFor(m => m.DataAbertura, new { @class = "form-control datepicker", @id = "txtDataAbertura" })
+      </div>
+    </div>
+    <div class='col-md-2'>
+      <div class="form-group">
+        @Html.LabelFor(m => m.Duracao, new { @for = "txtDuracao", @class = "tituloCampo" })
+        @Html.DropDownList("Duracao",Html.GetEnumSelectList<DuracaoCapsula>() , new { @class = "form-control", @id = "txtDuracao" })
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class='col-md-6'>
+      <div class="form-group">
+        @Html.LabelFor(m => m.Mensagem, new { @for = "txtMensagem", @class = "tituloCampo" })
+        @Html.TextAreaFor(m => m.Mensagem, new { @class = "form-control", @id = "txtMensagem", @rows = "5", @maxlength = "1000" })
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class='col-md-6'>
+      <div class="form-group">
+        @Html.LabelFor(m => m.Imagem, new { @for = "txtImagem", @class = "tituloCampo" })
+        @Html.TextBoxFor(m => m.Imagem, new { @class = "form-control", @id = "txtImagem", @type = "file" })
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class='col-md-6 text-right'>
+      <input type="submit" value="Salvar" class="btn btn-primary" />
+    </div>
+  </div>
+}
+
+<script type="text/javascript">
+  $(function () {
+    $('.datepicker').datetimepicker();
+  });
+</script>

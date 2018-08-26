@@ -29,6 +29,10 @@ namespace CapsulaDoTempo.Controllers
         return NotFound();
 
       var e = c.CalcularEstadoCapsula();
+
+      //apenas em DEV
+      //e = EstadoCapsula.Aberta;
+
       switch (e)
       {         
         case EstadoCapsula.Aberta:
@@ -49,7 +53,12 @@ namespace CapsulaDoTempo.Controllers
     {
       capsula.Id = id;
       capsula.DataCriacao = DateTime.Now;
-      
+
+      string msgErro;
+      if (!capsula.ValidarCriacao(out msgErro))
+      {
+        return BadRequest(msgErro);
+      }
 
       var c = await repositorio.RecuperarCapsula(capsula.Id);
 

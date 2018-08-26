@@ -20,9 +20,6 @@ namespace CapsulaDoTempoUI.Controllers
     public HomeController(IConfiguration config)
     {
       urlApi = config.GetValue<string>("URLCapsulaDoTempoAPI");
-
-
-
     }
 
     [HttpGet("{id}")]
@@ -31,7 +28,7 @@ namespace CapsulaDoTempoUI.Controllers
       if (string.IsNullOrWhiteSpace(id))
       {
         //Mostra o manual
-        return View();
+        return Ok();
       }
 
       if (id == "ping")
@@ -48,7 +45,7 @@ namespace CapsulaDoTempoUI.Controllers
       }
       else if (result.StatusCode == System.Net.HttpStatusCode.NotFound)
       {
-        return View();
+        return View("NovaCapsula");
       }
       else if (result.StatusCode == System.Net.HttpStatusCode.OK)
       {
@@ -57,8 +54,14 @@ namespace CapsulaDoTempoUI.Controllers
 
         return View("CapsulaExistente", new CapsulaDoTempoViewModel()
         {
-          Mensagem = obj.mensagem
+          Mensagem = obj.mensagem,
+          ImagemStr = obj.imagem
         });
+      }
+      else if (result.StatusCode == System.Net.HttpStatusCode.BadRequest)
+      {
+        return View("Error");
+        //result.Content.
       }
       return View();
 
@@ -83,24 +86,14 @@ namespace CapsulaDoTempoUI.Controllers
       {
         DataAbertura = capsula.DataAbertura,
         Mensagem = capsula.Mensagem,
-        Imagem = strImagem
+        Imagem = strImagem,
+        Duracao = capsula.Duracao
       };
 
       HttpClient cli = new HttpClient();
       var result = await cli.PostAsync(new Uri(urlApi + id), new StringContent(JsonConvert.SerializeObject(caps), Encoding.UTF8, "application/json"));
-
-      //foreach (string file in Request..Files)
-      //{
-      //  HttpPostedFile hpf = Request.Files[file] as HttpPostedFile;
-      //  if (hpf.ContentLength == 0)
-      //    continue;
-      //  string savedFileName = Path.Combine(
-      //     AppDomain.CurrentDomain.BaseDirectory,
-      //     Path.GetFileName(hpf.FileName));
-      //  hpf.SaveAs(savedFileName);
-      //}
-
-      return Ok();
+      
+      return await Index(id);
     }
 
     public IActionResult Error()
@@ -113,6 +106,7 @@ namespace CapsulaDoTempoUI.Controllers
       public DateTime DataAbertura { get; set; }
       public string Mensagem { get; set; }
       public string Imagem { get; set; }
+      public DuracaoCapsula Duracao { get; internal set; }
     }
   }
 }
