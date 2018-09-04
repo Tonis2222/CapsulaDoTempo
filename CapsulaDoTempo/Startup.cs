@@ -27,7 +27,6 @@ namespace CapsulaDoTempo
     {
       string cnn = @"mongodb://capsula-do-tempo:70zdmvtoXYgxuMtbNSxRpViVYZ7eGolxFAfSfSHCpIbub0XybWGY0XQZIJYTvvLMK7hwDjxBUgfePMOdiXfPZg==@capsula-do-tempo.documents.azure.com:10255/?ssl=true&replicaSet=globaldb";
       //string cnn2 = @"mongodb+srv://tonis222:DewkAtdethudlo9@capsuladotempo-7usjc.gcp.mongodb.net/test?retryWrites=true";
-      //string cnn2 = @"mongodb+srv://tonis222:2794xxXX@cluster0-7usjc.mongodb.net/capsuladotempo?retryWrites=true";
       services.AddTransient<IRepositorioCapsulaDoTempo, RepositorioCapsulaDoTempo>(a => new RepositorioCapsulaDoTempo(cnn));
 
       services.AddMvc();
