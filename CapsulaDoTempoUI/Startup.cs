@@ -9,43 +9,43 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace CapsulaDoTempoUI
 {
-    public class Startup
+  public class Startup
+  {
+    public Startup(IConfiguration configuration)
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
-
-        public IConfiguration Configuration { get; }
-
-        // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
-        {
-          services.AddTransient<IConfiguration>(a => Configuration);
-          services.AddMvc();
-        }
-
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
-        {
-            if (env.IsDevelopment())
-            {
-                app.UseBrowserLink();
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                app.UseExceptionHandler("/Home/Error");
-            }
-
-            app.UseStaticFiles();
-
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
-            });
-        }
+      Configuration = configuration;
     }
+
+    public IConfiguration Configuration { get; }
+
+    // This method gets called by the runtime. Use this method to add services to the container.
+    public void ConfigureServices(IServiceCollection services)
+    {
+      services.AddTransient<IConfiguration>(a => Configuration);
+      services.AddMvc();
+    }
+
+    // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+    public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+    {
+      if (env.IsDevelopment())
+      {
+        app.UseBrowserLink();
+        app.UseDeveloperExceptionPage();
+      }
+      else
+      {
+        app.UseExceptionHandler("/Home/Error");
+      }
+      app.UseRequestLocalization(new RequestLocalizationOptions() { DefaultRequestCulture = new Microsoft.AspNetCore.Localization.RequestCulture("pt-BR") });
+      app.UseStaticFiles();
+
+      app.UseMvc(routes =>
+      {
+        routes.MapRoute(
+                  name: "default",
+                  template: "{controller=Home}/{action=Index}/{id?}");
+      });
+    }
+  }
 }

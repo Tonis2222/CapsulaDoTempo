@@ -22,12 +22,12 @@ namespace RepositorioMongo
 
       capsulas = baseCapsulas.GetCollection<CapsulaDoTempo>(nameof(CapsulaDoTempo));
 
-      //if (configuracoes == null)
-      //{
-      //  baseConfiguracao.CreateCollection(nameof(ConfiguracaoDeConversao));
+      if (capsulas == null)
+      {
+        baseCapsulas.CreateCollection(nameof(CapsulaDoTempo));
 
-      //  configuracoes = baseConfiguracao.GetCollection<ConfiguracaoDeConversao>(nameof(ConfiguracaoDeConversao));
-      //}
+        capsulas = baseCapsulas.GetCollection<CapsulaDoTempo>(nameof(CapsulaDoTempo));
+      }
     }
 
     public async Task ExcluirCapsula(string id)

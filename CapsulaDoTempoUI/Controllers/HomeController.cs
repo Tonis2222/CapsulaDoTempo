@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 using System.IO;
 using Newtonsoft.Json;
 using System.Text;
+using System.Globalization;
 
 namespace CapsulaDoTempoUI.Controllers
 {
@@ -82,9 +83,21 @@ namespace CapsulaDoTempoUI.Controllers
 
       var strImagem = Convert.ToBase64String(img);
 
+      TimeZoneInfo tz;
+      try
+      {
+        tz = TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time");
+      }
+      catch (TimeZoneNotFoundException)
+      {
+        tz = TimeZoneInfo.FindSystemTimeZoneById("America/Sao_Paulo");
+      }
+      
+      DateTime dataUTC = TimeZoneInfo.ConvertTimeToUtc(capsula.DataAbertura, tz);
+
       CapsulaDto caps = new CapsulaDto()
       {
-        DataAbertura = capsula.DataAbertura,
+        DataAbertura = dataUTC,
         Mensagem = capsula.Mensagem,
         Imagem = strImagem,
         Duracao = capsula.Duracao
@@ -92,6 +105,11 @@ namespace CapsulaDoTempoUI.Controllers
 
       HttpClient cli = new HttpClient();
       var result = await cli.PostAsync(new Uri(urlApi + id), new StringContent(JsonConvert.SerializeObject(caps), Encoding.UTF8, "application/json"));
+
+      if (result.StatusCode == System.Net.HttpStatusCode.BadRequest)
+      {
+        ViewBag.Mensagem = await result.Content.ReadAsStringAsync();
+      }
       
       return await Index(id);
     }

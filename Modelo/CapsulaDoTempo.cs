@@ -13,9 +13,9 @@ namespace Modelo
 
     public EstadoCapsula CalcularEstadoCapsula()
     {
-      if (DateTime.Now < DataAbertura)
+      if (DateTime.UtcNow < DataAbertura)
         return EstadoCapsula.Criada;
-      else if (DateTime.Now < CalcularDataExpiracao())
+      else if (DateTime.UtcNow < CalcularDataExpiracao())
         return EstadoCapsula.Aberta;
       else
         return EstadoCapsula.Expirada;
@@ -49,7 +49,7 @@ namespace Modelo
         return false;
       }
 
-      if (DataAbertura < DateTime.Now)
+      if (DataAbertura < DateTime.UtcNow)
       {
         msgErro = "A data de abertura deve uma data futura.";
         return false;
@@ -58,9 +58,21 @@ namespace Modelo
       if (Mensagem?.Length > 1000)
       {
         msgErro = "A mensagem deve ter no máximo 1000 caracteres";
+        return false;
+      }
+
+      if (!string.IsNullOrEmpty(Imagem) && CalculaTamanhoBytes(Imagem) > 512000)
+      {
+        msgErro = "A Imagem não deve ter mais de 512 KB";
+        return false;
       }
       
       return true;
+    }
+
+    private int CalculaTamanhoBytes(string imagem)
+    {
+      return 2 * (imagem.Length / 3);
     }
   }
 }

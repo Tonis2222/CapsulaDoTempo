@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Modelo;
@@ -20,6 +22,7 @@ namespace CapsulaDoTempo.Controllers
     [HttpGet("{id}")]
     public async Task<ActionResult> Get(string id)
     {
+
       if (id == "ping")
         return new OkObjectResult("No ar!");
 
@@ -51,8 +54,10 @@ namespace CapsulaDoTempo.Controllers
     [HttpPost("{id}")]
     public async Task<ActionResult> Post(string id, [FromBody]Modelo.CapsulaDoTempo capsula)
     {
+
       capsula.Id = id;
-      capsula.DataCriacao = DateTime.Now;
+      capsula.DataCriacao = DateTime.UtcNow;
+      capsula.DataAbertura = capsula.DataAbertura.ToUniversalTime();
 
       string msgErro;
       if (!capsula.ValidarCriacao(out msgErro))

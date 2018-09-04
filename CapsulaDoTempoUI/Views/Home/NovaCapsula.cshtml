@@ -7,6 +7,16 @@
 <div class="row">
   <h2>Criar nova capsula</h2>
 </div>
+
+@{
+  if (!string.IsNullOrEmpty(ViewBag.Mensagem))
+  {
+    <div class="alert alert-danger">
+      <strong>Erro!</strong> @ViewBag.Mensagem
+    </div>
+  }
+
+}
 @using (Html.BeginForm("CriarCapsula", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
 
@@ -20,7 +30,7 @@
     <div class='col-md-2'>
       <div class="form-group">
         @Html.LabelFor(m => m.Duracao, new { @for = "txtDuracao", @class = "tituloCampo" })
-        @Html.DropDownList("Duracao",Html.GetEnumSelectList<DuracaoCapsula>() , new { @class = "form-control", @id = "txtDuracao" })
+        @Html.DropDownList("Duracao", Html.GetEnumSelectList<DuracaoCapsula>(), new { @class = "form-control", @id = "txtDuracao" })
       </div>
     </div>
   </div>
