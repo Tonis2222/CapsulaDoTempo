@@ -1,4 +1,5 @@
-﻿using Modelo;
+﻿using DomainModel.Entities;
+using DomainModel.Interfaces.Repositories;
 using MongoDB.Driver;
 using System;
 using System.Threading.Tasks;

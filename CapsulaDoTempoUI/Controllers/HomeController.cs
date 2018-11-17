@@ -71,17 +71,20 @@ namespace CapsulaDoTempoUI.Controllers
     [HttpPost("{id}")]
     public async Task<IActionResult> CriarCapsula(string id, [FromForm] CapsulaDoTempoViewModel capsula)
     {
-      var str = capsula.Imagem.OpenReadStream();
-
-      byte[] img = new byte[capsula.Imagem.Length];
-
-      using (var memoryStream = new MemoryStream())
+      string strImagem = string.Empty;
+      if (capsula.Imagem != null)
       {
-        await capsula.Imagem.CopyToAsync(memoryStream);
-        img = memoryStream.ToArray();
-      }
+        var str = capsula.Imagem.OpenReadStream();
 
-      var strImagem = Convert.ToBase64String(img);
+        byte[] img = new byte[capsula.Imagem.Length];
+
+        using (var memoryStream = new MemoryStream())
+        {
+          await capsula.Imagem.CopyToAsync(memoryStream);
+          img = memoryStream.ToArray();
+        }
+        strImagem = Convert.ToBase64String(img);
+      }
 
       TimeZoneInfo tz;
       try
@@ -92,7 +95,7 @@ namespace CapsulaDoTempoUI.Controllers
       {
         tz = TimeZoneInfo.FindSystemTimeZoneById("America/Sao_Paulo");
       }
-      
+
       DateTime dataUTC = TimeZoneInfo.ConvertTimeToUtc(capsula.DataAbertura, tz);
 
       CapsulaDto caps = new CapsulaDto()
@@ -110,7 +113,7 @@ namespace CapsulaDoTempoUI.Controllers
       {
         ViewBag.Mensagem = await result.Content.ReadAsStringAsync();
       }
-      
+
       return await Index(id);
     }
 

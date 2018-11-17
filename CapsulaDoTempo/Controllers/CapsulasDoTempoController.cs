@@ -4,8 +4,9 @@ using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using DomainModel.Interfaces.Repositories;
+using DomainService;
 using Microsoft.AspNetCore.Mvc;
-using Modelo;
 
 namespace CapsulaDoTempo.Controllers
 {
@@ -22,66 +23,40 @@ namespace CapsulaDoTempo.Controllers
     [HttpGet("{id}")]
     public async Task<ActionResult> Get(string id)
     {
+      var ds = new CapsulaDoTempoService(repositorio);
 
-      if (id == "ping")
-        return new OkObjectResult("No ar!");
+      var resultado = await ds.BuscarCapsulaPorId(id);
 
-      var c = await repositorio.RecuperarCapsula(id);
-
-      if (c == null)
-        return NotFound();
-
-      var e = c.CalcularEstadoCapsula();
-
-      //apenas em DEV
-      //e = EstadoCapsula.Aberta;
-
-      switch (e)
-      {         
-        case EstadoCapsula.Aberta:
-          return new OkObjectResult(c);
-
-        case EstadoCapsula.Expirada:
-          await repositorio.ExcluirCapsula(id);
+      switch (resultado.ResultadoBusca)
+      {
+        case ResultadoBusca.NaoEncontrado:
           return NotFound();
-
-        case EstadoCapsula.Criada:
+          break;
+        case ResultadoBusca.Encontrado:
+          return new OkObjectResult(resultado.Capsula);
+          break;
+        case ResultadoBusca.CapsulaFechada:
         default:
-          return Unauthorized();          
+          return Unauthorized();
       }
     }
 
     [HttpPost("{id}")]
-    public async Task<ActionResult> Post(string id, [FromBody]Modelo.CapsulaDoTempo capsula)
+    public async Task<ActionResult> Post(string id, [FromBody]DomainModel.Entities.CapsulaDoTempo capsula)
     {
 
-      capsula.Id = id;
-      capsula.DataCriacao = DateTime.UtcNow;
-      capsula.DataAbertura = capsula.DataAbertura.ToUniversalTime();
+      var ds = new CapsulaDoTempoService(repositorio);
+      var resultado = await ds.CriarCapsula(id, capsula);
 
-      string msgErro;
-      if (!capsula.ValidarCriacao(out msgErro))
+      switch (resultado.ResultadoCriacao)
       {
-        return BadRequest(msgErro);
-      }
-
-      var c = await repositorio.RecuperarCapsula(capsula.Id);
-
-      if (c == null)
-      {
-        await repositorio.SalvarCapsula(capsula);
-        return Ok();
-      }
-      else if (c.CalcularEstadoCapsula() == EstadoCapsula.Expirada)
-      {
-        await repositorio.ExcluirCapsula(capsula.Id);
-        await repositorio.SalvarCapsula(capsula);
-        return Ok();
-
-      }
-      else
-      {
-        return Unauthorized();
+        case ResultadoCriacao.NaoCriada:
+          return BadRequest(resultado.Mensagem);
+        case ResultadoCriacao.Criada:
+          return Ok();
+        case ResultadoCriacao.CapsulaJaExistente:
+        default:
+          return Unauthorized();
       }
     }
   }

@@ -1,4 +1,4 @@
-using Modelo;
+using DomainModel.Entities;
 using System;
 using Xunit;
 
