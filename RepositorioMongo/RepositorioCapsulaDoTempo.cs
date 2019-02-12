@@ -42,7 +42,7 @@ namespace RepositorioMongo
       return retorno.FirstOrDefault();
     }
 
-    public async Task SalvarCapsula(CapsulaDoTempo capsula)
+    public async Task CriarCapsula(CapsulaDoTempo capsula)
     {
      await capsulas.InsertOneAsync(capsula);
     }

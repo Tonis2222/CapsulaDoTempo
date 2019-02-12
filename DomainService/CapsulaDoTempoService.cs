@@ -23,9 +23,7 @@ namespace DomainService
       if (c == null)
         return new ResultadoBuscaCapsula() { ResultadoBusca = ResultadoBusca.NaoEncontrado };
 
-      var e = c.CalcularEstadoCapsula();
-
-      switch (e)
+      switch (c.Estado)
       {
         case EstadoCapsula.Aberta:
           return new ResultadoBuscaCapsula() { ResultadoBusca = ResultadoBusca.Encontrado, Capsula = c };
@@ -56,13 +54,13 @@ namespace DomainService
 
       if (c == null)
       {
-        await repositorio.SalvarCapsula(capsula);
+        await repositorio.CriarCapsula(capsula);
         return new ResultadoCriacaoCapsula() { ResultadoCriacao = ResultadoCriacao.Criada };
       }
-      else if (c.CalcularEstadoCapsula() == EstadoCapsula.Expirada)
+      else if (c.Estado == EstadoCapsula.Expirada)
       {
         await repositorio.ExcluirCapsula(capsula.Id);
-        await repositorio.SalvarCapsula(capsula);
+        await repositorio.CriarCapsula(capsula);
         return new ResultadoCriacaoCapsula() { ResultadoCriacao = ResultadoCriacao.Criada };
 
       }

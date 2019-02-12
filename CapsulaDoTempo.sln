@@ -15,15 +15,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CapsulaDoTempoUI", "Capsula
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0 - Presentation", "0 - Presentation", "{C85711A0-E6EF-445E-AAB1-213D40028423}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1 - Aplication", "1 - Aplication", "{0A80E409-0B04-4A4C-B7B0-4557BA197569}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1 - Application", "1 - Application", "{0A80E409-0B04-4A4C-B7B0-4557BA197569}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2 - Domain", "2 - Domain", "{6D8C54E3-524F-4E59-8E7E-ABAE73F786DA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3 - Infrastructure", "3 - Infrastructure", "{F2EBFD1E-2DD5-48CC-B61B-C72EE4D6B836}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomainModel", "..\DomainModel\DomainModel.csproj", "{77F0C72B-9B33-4FDC-A023-01EF259D254F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainModel", "..\DomainModel\DomainModel.csproj", "{77F0C72B-9B33-4FDC-A023-01EF259D254F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomainService", "DomainService\DomainService.csproj", "{02DDF7DB-08E8-49A3-81B3-72746FA959A5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainService", "DomainService\DomainService.csproj", "{02DDF7DB-08E8-49A3-81B3-72746FA959A5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

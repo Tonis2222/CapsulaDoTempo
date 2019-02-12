@@ -31,10 +31,8 @@ namespace CapsulaDoTempo.Controllers
       {
         case ResultadoBusca.NaoEncontrado:
           return NotFound();
-          break;
         case ResultadoBusca.Encontrado:
           return new OkObjectResult(resultado.Capsula);
-          break;
         case ResultadoBusca.CapsulaFechada:
         default:
           return Unauthorized();
