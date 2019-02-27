@@ -2,6 +2,7 @@
 using DomainModel.Interfaces.Repositories;
 using MongoDB.Driver;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace RepositorioMongo
@@ -44,7 +45,14 @@ namespace RepositorioMongo
 
     public async Task CriarCapsula(CapsulaDoTempo capsula)
     {
-     await capsulas.InsertOneAsync(capsula);
+      await capsulas.InsertOneAsync(capsula);
+    }
+
+    public async Task<List<CapsulaDoTempo>> RecuperarCapsulasAbertasOuExpiradas()
+    {
+      var result = await capsulas.FindAsync(Builders<CapsulaDoTempo>.Filter.Gt(a => a.DataAbertura, DateTime.UtcNow));
+      return result.ToList();
+
     }
   }
 }

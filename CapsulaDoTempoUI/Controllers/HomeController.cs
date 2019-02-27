@@ -12,6 +12,7 @@ using System.IO;
 using Newtonsoft.Json;
 using System.Text;
 using System.Globalization;
+using System.Net;
 
 namespace CapsulaDoTempoUI.Controllers
 {
@@ -22,6 +23,13 @@ namespace CapsulaDoTempoUI.Controllers
     {
       urlApi = config.GetValue<string>("URLCapsulaDoTempoAPI");
     }
+
+    [HttpGet]
+    public IActionResult Index()
+    {
+      return View("Index");
+    }
+
 
     [HttpGet("{id}")]
     public async Task<IActionResult> Index(string id)
@@ -98,12 +106,17 @@ namespace CapsulaDoTempoUI.Controllers
 
       DateTime dataUTC = TimeZoneInfo.ConvertTimeToUtc(capsula.DataAbertura, tz);
 
+      var ipCliente = this.Request.HttpContext.Connection.RemoteIpAddress;
+
+
       CapsulaDto caps = new CapsulaDto()
       {
         DataAbertura = dataUTC,
         Mensagem = capsula.Mensagem,
         Imagem = strImagem,
-        Duracao = capsula.Duracao
+        Duracao = capsula.Duracao,
+        Email = capsula.Email,
+        Ip = ipCliente
       };
 
       HttpClient cli = new HttpClient();
@@ -128,6 +141,8 @@ namespace CapsulaDoTempoUI.Controllers
       public string Mensagem { get; set; }
       public string Imagem { get; set; }
       public DuracaoCapsula Duracao { get; internal set; }
+      public string Email { get; internal set; }
+      public IPAddress Ip { get; internal set; }
     }
   }
 }

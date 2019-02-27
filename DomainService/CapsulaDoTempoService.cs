@@ -15,7 +15,7 @@ namespace DomainService
     {
       repositorio = _repositorio;
     }
-    
+
     public async Task<ResultadoBuscaCapsula> BuscarCapsulaPorId(string id)
     {
       var c = await repositorio.RecuperarCapsula(id);
@@ -50,6 +50,11 @@ namespace DomainService
         return new ResultadoCriacaoCapsula() { ResultadoCriacao = ResultadoCriacao.NaoCriada, Mensagem = msgErro };
       }
 
+      if (!string.IsNullOrEmpty(capsula.Email))
+      {
+        capsula.ChaveCapsula = CriptoService.Criptografar(capsula.Id,capsula.Email);
+      }
+
       var c = await repositorio.RecuperarCapsula(capsula.Id);
 
       if (c == null)
@@ -62,11 +67,36 @@ namespace DomainService
         await repositorio.ExcluirCapsula(capsula.Id);
         await repositorio.CriarCapsula(capsula);
         return new ResultadoCriacaoCapsula() { ResultadoCriacao = ResultadoCriacao.Criada };
-
       }
       else
       {
         return new ResultadoCriacaoCapsula() { ResultadoCriacao = ResultadoCriacao.CapsulaJaExistente };
+      }
+    }
+
+    public async Task<ResultadoExclusao> ExcluirCapsuladoTempo(string id, string chaveCapsula)
+    {
+      var c = await repositorio.RecuperarCapsula(id);
+
+      if (c == null)
+      {
+        return ResultadoExclusao.CapsulaNaoEncontrada;
+      }
+      else
+      {
+        if (!c.Editavel)
+        {
+          return ResultadoExclusao.CapsulaNaoPermiteEdicao;
+        }
+        else if (c.ChaveCapsula == chaveCapsula)
+        {
+          await repositorio.ExcluirCapsula(id);
+          return ResultadoExclusao.Excluida;
+        }
+        else
+        {
+          return ResultadoExclusao.ChaveInvalida;
+        }
       }
     }
   }

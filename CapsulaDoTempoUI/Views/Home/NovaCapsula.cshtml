@@ -51,6 +51,14 @@
     </div>
   </div>
   <div class="row">
+    <div class='col-md-6'>
+      <div class="form-group">
+        @Html.LabelFor(m => m.Email, new { @for = "txtEmail", @class = "tituloCampo" })
+        @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @id = "txtEmail", @maxlength = "250" })
+      </div>
+    </div>
+  </div>
+  <div class="row">
     <div class='col-md-6 text-right'>
       <input type="submit" value="Salvar" class="btn btn-primary" />
     </div>

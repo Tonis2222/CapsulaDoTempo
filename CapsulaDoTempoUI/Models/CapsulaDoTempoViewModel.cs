@@ -22,5 +22,8 @@ namespace CapsulaDoTempoUI.Models
     public IFormFile Imagem { get; set; }
 
     public string ImagemStr { get; set; }
+
+    [Display(Name = "Email(opcional, permite modificar a capsula)")]
+    public string Email { get; set; }
   }
 }

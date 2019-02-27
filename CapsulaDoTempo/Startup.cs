@@ -23,7 +23,7 @@ namespace CapsulaDoTempo
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
-      string cnn = @"mongodb://capsula-do-tempo:70zdmvtoXYgxuMtbNSxRpViVYZ7eGolxFAfSfSHCpIbub0XybWGY0XQZIJYTvvLMK7hwDjxBUgfePMOdiXfPZg==@capsula-do-tempo.documents.azure.com:10255/?ssl=true&replicaSet=globaldb";
+      string cnn = @"mongodb://capsuladotempomongo:YVHBWJF1Op548upEpNrs9iBNPwC6EBslSdJBvlEYydbM9l1cz7xyTaZf0MMNuCiCB4aZdx4jgeY1kO4wahMsZQ==@capsuladotempomongo.documents.azure.com:10255/?ssl=true&replicaSet=globaldb";
       //string cnn2 = @"mongodb+srv://tonis222:DewkAtdethudlo9@capsuladotempo-7usjc.gcp.mongodb.net/test?retryWrites=true";
       services.AddTransient<IRepositorioCapsulaDoTempo, RepositorioCapsulaDoTempo>(a => new RepositorioCapsulaDoTempo(cnn));
 

@@ -57,5 +57,24 @@ namespace CapsulaDoTempo.Controllers
           return Unauthorized();
       }
     }
+
+    [HttpDelete("{id}")]
+    public async Task<ActionResult> Delete(string id, [FromBody]DomainModel.Entities.CapsulaDoTempo capsula)
+    {
+
+      var ds = new CapsulaDoTempoService(repositorio);
+
+      var resultado = await ds.ExcluirCapsuladoTempo(id,capsula.ChaveCapsula);
+      
+      switch (resultado)
+      {
+        case ResultadoExclusao.Excluida:
+          return Ok();
+        case ResultadoExclusao.CapsulaNaoEncontrada:
+          return NotFound(); 
+        default:
+          return Unauthorized();
+      }
+    }
   }
 }
