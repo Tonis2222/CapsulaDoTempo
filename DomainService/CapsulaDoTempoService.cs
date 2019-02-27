@@ -74,6 +74,43 @@ namespace DomainService
       }
     }
 
+    public async Task<ResultadoAlteracao> AlterarCapsulaDoTempo(string id, CapsulaDoTempo capsula)
+    {
+      var c = await repositorio.RecuperarCapsula(id);
+
+      if (c == null)
+      {
+        return ResultadoAlteracao.CapsulaNaoEncontrada;
+      }
+      else
+      {
+        if (!c.Editavel)
+        {
+          return ResultadoAlteracao.CapsulaNaoPermiteEdicao;
+        }
+        else if (c.ChaveCapsula == capsula.ChaveCapsula)
+        {
+          c.DataAbertura = capsula.DataAbertura;
+          c.Duracao = capsula.Duracao;
+          c.Imagem = capsula.Imagem;
+          c.Mensagem = capsula.Mensagem;
+
+          string retornoValidacao;
+          if (!c.ValidarCriacao(out retornoValidacao))
+          {
+            return ResultadoAlteracao.CapsulaNaoValidada;
+          }
+          
+          await repositorio.AtualizarCapsula(c);
+          return ResultadoAlteracao.Alterada;
+        }
+        else
+        {
+          return ResultadoAlteracao.ChaveInvalida;
+        }
+      }
+    }
+
     public async Task<ResultadoExclusao> ExcluirCapsuladoTempo(string id, string chaveCapsula)
     {
       var c = await repositorio.RecuperarCapsula(id);

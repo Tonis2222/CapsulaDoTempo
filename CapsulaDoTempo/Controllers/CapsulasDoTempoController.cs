@@ -58,10 +58,27 @@ namespace CapsulaDoTempo.Controllers
       }
     }
 
+    [HttpPut("{id}")]
+    public async Task<ActionResult> Put(string id, [FromBody]DomainModel.Entities.CapsulaDoTempo capsula)
+    {
+
+      var ds = new CapsulaDoTempoService(repositorio);
+      var resultado = await ds.AlterarCapsulaDoTempo(id, capsula);
+
+      switch (resultado)
+      {
+        case ResultadoAlteracao.Alterada:
+          return Ok();
+        case ResultadoAlteracao.CapsulaNaoEncontrada:
+          return NotFound();
+        default:
+          return Unauthorized();
+      }
+    }
+
     [HttpDelete("{id}")]
     public async Task<ActionResult> Delete(string id, [FromBody]DomainModel.Entities.CapsulaDoTempo capsula)
     {
-
       var ds = new CapsulaDoTempoService(repositorio);
 
       var resultado = await ds.ExcluirCapsuladoTempo(id,capsula.ChaveCapsula);

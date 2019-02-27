@@ -54,6 +54,11 @@ namespace RepositorioMongo
       return result.ToList();
 
     }
+
+    public async Task AtualizarCapsula(CapsulaDoTempo capsula)
+    {
+      await capsulas.FindOneAndReplaceAsync(Builders<CapsulaDoTempo>.Filter.Eq(a => a.Id, capsula.Id), capsula);
+    }
   }
 }
 
