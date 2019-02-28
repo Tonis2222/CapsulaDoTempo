@@ -59,13 +59,24 @@
     </div>
   </div>
   <div class="row">
+    <div class='col-md-6'>
+      <recaptcha />
+    </div>
+  </div>
+  <div class="row">
     <div class='col-md-6 text-right'>
       <input type="submit" value="Salvar" class="btn btn-primary" />
     </div>
   </div>
 }
 
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+<recaptcha-script />
+
 <script type="text/javascript">
+
   $(function () {
     $('.datepicker').datetimepicker();
   });

@@ -13,6 +13,7 @@ using Newtonsoft.Json;
 using System.Text;
 using System.Globalization;
 using System.Net;
+using PaulMiami.AspNetCore.Mvc.Recaptcha;
 
 namespace CapsulaDoTempoUI.Controllers
 {
@@ -78,9 +79,16 @@ namespace CapsulaDoTempoUI.Controllers
 
     }
 
+    [ValidateRecaptcha]
     [HttpPost("{id}")]
     public async Task<IActionResult> CriarCapsula(string id, [FromForm] CapsulaDoTempoViewModel capsula)
     {
+      if (!ModelState.IsValid)
+      {
+        ViewBag.Mensagem = "Favor preencher o captcha.";
+        return await Index(id);
+      }
+
       string strImagem = string.Empty;
       if (capsula.Imagem != null)
       {

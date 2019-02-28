@@ -26,6 +26,7 @@ namespace CapsulaDoTempo
     public void ConfigureServices(IServiceCollection services)
     {
 
+
       services.AddTransient<IRepositorioCapsulaDoTempo, RepositorioCapsulaDoTempo>(a => new RepositorioCapsulaDoTempo(cnn));
       services.AddTransient<INotificacaoService, NotificadorGmail>(a => new NotificadorGmail(senhaGmail));
       services.AddMvc();

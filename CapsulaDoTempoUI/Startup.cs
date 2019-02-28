@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using PaulMiami.AspNetCore.Mvc.Recaptcha;
 
 namespace CapsulaDoTempoUI
 {
@@ -23,6 +24,10 @@ namespace CapsulaDoTempoUI
     {
       services.AddTransient<IConfiguration>(a => Configuration);
       services.AddMvc();
+      services.AddRecaptcha(new RecaptchaOptions
+      {
+
+      });
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
