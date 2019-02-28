@@ -24,6 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\NotificacaoEmail\NotificacaoEmail.csproj" />
     <ProjectReference Include="..\DomainService\DomainService.csproj" />
     <ProjectReference Include="..\RepositorioMongo\RepositorioMongo.csproj" />
   </ItemGroup>

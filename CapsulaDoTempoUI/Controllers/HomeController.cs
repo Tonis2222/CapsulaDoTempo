@@ -32,7 +32,7 @@ namespace CapsulaDoTempoUI.Controllers
 
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> Index(string id)
+    public async Task<IActionResult> Index(string id,string chave = null)
     {
       if (string.IsNullOrWhiteSpace(id))
       {
@@ -46,6 +46,8 @@ namespace CapsulaDoTempoUI.Controllers
       }
 
       HttpClient cli = new HttpClient();
+      var url = urlApi + id + (string.IsNullOrEmpty(chave) ? string.Empty : ("?chave=" + chave));
+
       var result = await cli.GetAsync(new Uri(urlApi + id));
 
       if (result.StatusCode == System.Net.HttpStatusCode.Unauthorized)
@@ -116,7 +118,7 @@ namespace CapsulaDoTempoUI.Controllers
         Imagem = strImagem,
         Duracao = capsula.Duracao,
         Email = capsula.Email,
-        Ip = ipCliente
+        Ip = ipCliente.ToString()
       };
 
       HttpClient cli = new HttpClient();
@@ -142,7 +144,7 @@ namespace CapsulaDoTempoUI.Controllers
       public string Imagem { get; set; }
       public DuracaoCapsula Duracao { get; internal set; }
       public string Email { get; internal set; }
-      public IPAddress Ip { get; internal set; }
+      public string Ip { get; internal set; }
     }
   }
 }

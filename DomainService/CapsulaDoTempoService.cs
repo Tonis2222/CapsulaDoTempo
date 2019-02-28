@@ -1,4 +1,5 @@
 ﻿using DomainModel.Entities;
+using DomainModel.Interfaces;
 using DomainModel.Interfaces.Repositories;
 using System;
 using System.Collections.Generic;
@@ -10,10 +11,12 @@ namespace DomainService
   public class CapsulaDoTempoService
   {
     IRepositorioCapsulaDoTempo repositorio;
+    INotificacaoService notificacao;
 
-    public CapsulaDoTempoService(IRepositorioCapsulaDoTempo _repositorio)
+    public CapsulaDoTempoService(IRepositorioCapsulaDoTempo _repositorio, INotificacaoService _notificacao)
     {
       repositorio = _repositorio;
+      notificacao = _notificacao;
     }
 
     public async Task<ResultadoBuscaCapsula> BuscarCapsulaPorId(string id)
@@ -33,6 +36,34 @@ namespace DomainService
           return new ResultadoBuscaCapsula() { ResultadoBusca = ResultadoBusca.NaoEncontrado };
 
         case EstadoCapsula.Criada:
+        default:
+          return new ResultadoBuscaCapsula() { ResultadoBusca = ResultadoBusca.CapsulaFechada };
+      }
+    }
+
+    public async Task<ResultadoBuscaCapsula> BuscarCapsulaParaEdicao(string id, string chave)
+    {
+      var c = await repositorio.RecuperarCapsula(id);
+
+      if (c == null)
+        return new ResultadoBuscaCapsula() { ResultadoBusca = ResultadoBusca.NaoEncontrado };
+
+      switch (c.Estado)
+      {
+        case EstadoCapsula.Aberta:
+          return new ResultadoBuscaCapsula() { ResultadoBusca = ResultadoBusca.Encontrado, Capsula = c };
+
+        case EstadoCapsula.Expirada:
+          await repositorio.ExcluirCapsula(id);
+          return new ResultadoBuscaCapsula() { ResultadoBusca = ResultadoBusca.NaoEncontrado };
+
+        case EstadoCapsula.Criada:
+          {
+            if (c.ChaveCapsula == chave)
+              return new ResultadoBuscaCapsula() { ResultadoBusca = ResultadoBusca.Encontrado, Capsula = c };
+            else
+              return new ResultadoBuscaCapsula() { ResultadoBusca = ResultadoBusca.CapsulaFechada };
+          }
         default:
           return new ResultadoBuscaCapsula() { ResultadoBusca = ResultadoBusca.CapsulaFechada };
       }
@@ -60,12 +91,14 @@ namespace DomainService
       if (c == null)
       {
         await repositorio.CriarCapsula(capsula);
+        await notificacao.NotificarCriacaoCapsula(capsula);
         return new ResultadoCriacaoCapsula() { ResultadoCriacao = ResultadoCriacao.Criada };
       }
       else if (c.Estado == EstadoCapsula.Expirada)
       {
         await repositorio.ExcluirCapsula(capsula.Id);
         await repositorio.CriarCapsula(capsula);
+        await notificacao.NotificarCriacaoCapsula(capsula);
         return new ResultadoCriacaoCapsula() { ResultadoCriacao = ResultadoCriacao.Criada };
       }
       else

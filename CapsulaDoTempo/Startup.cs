@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DomainModel.Interfaces;
 using DomainModel.Interfaces.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using NotificacaoEmail;
 using RepositorioMongo;
 
 namespace CapsulaDoTempo
@@ -23,10 +25,9 @@ namespace CapsulaDoTempo
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
-      string cnn = @"mongodb://capsuladotempomongo:YVHBWJF1Op548upEpNrs9iBNPwC6EBslSdJBvlEYydbM9l1cz7xyTaZf0MMNuCiCB4aZdx4jgeY1kO4wahMsZQ==@capsuladotempomongo.documents.azure.com:10255/?ssl=true&replicaSet=globaldb";
-      //string cnn2 = @"mongodb+srv://tonis222:DewkAtdethudlo9@capsuladotempo-7usjc.gcp.mongodb.net/test?retryWrites=true";
-      services.AddTransient<IRepositorioCapsulaDoTempo, RepositorioCapsulaDoTempo>(a => new RepositorioCapsulaDoTempo(cnn));
 
+      services.AddTransient<IRepositorioCapsulaDoTempo, RepositorioCapsulaDoTempo>(a => new RepositorioCapsulaDoTempo(cnn));
+      services.AddTransient<INotificacaoService, NotificadorGmail>(a => new NotificadorGmail(senhaGmail));
       services.AddMvc();
     }
 
