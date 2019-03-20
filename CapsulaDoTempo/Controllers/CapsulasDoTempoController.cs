@@ -30,13 +30,16 @@ namespace CapsulaDoTempo.Controllers
 
       var resultado = new ResultadoBuscaCapsula();
 
-      if (string.IsNullOrEmpty(chave))
+      var edicao = !string.IsNullOrEmpty(chave);
+      
+      if (edicao)
       {
-       resultado = await ds.BuscarCapsulaPorId(id);
+        var chaveDecoded = System.Net.WebUtility.UrlDecode(chave).Replace(" ", "+");
+        resultado = await ds.BuscarCapsulaParaEdicao(id, chaveDecoded);
       }
       else
       {
-        resultado = await ds.BuscarCapsulaParaEdicao(id, chave);
+        resultado = await ds.BuscarCapsulaPorId(id);        
       }
 
       switch (resultado.ResultadoBusca)

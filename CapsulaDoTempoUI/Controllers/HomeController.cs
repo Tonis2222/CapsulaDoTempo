@@ -47,9 +47,12 @@ namespace CapsulaDoTempoUI.Controllers
       }
 
       HttpClient cli = new HttpClient();
-      var url = urlApi + id + (string.IsNullOrEmpty(chave) ? string.Empty : ("?chave=" + chave));
 
-      var result = await cli.GetAsync(new Uri(urlApi + id));
+      var edicao = !string.IsNullOrEmpty(chave);
+
+      var url = urlApi + id + (edicao ? ("?chave=" + chave) : string.Empty);
+
+      var result = await cli.GetAsync(new Uri(url));
 
       if (result.StatusCode == System.Net.HttpStatusCode.Unauthorized)
       {
@@ -63,17 +66,30 @@ namespace CapsulaDoTempoUI.Controllers
       {
         var bdResult = await result.Content.ReadAsStringAsync();
         dynamic obj = Newtonsoft.Json.Linq.JObject.Parse(bdResult);
-
-        return View("CapsulaExistente", new CapsulaDoTempoViewModel()
+        if (edicao)
         {
-          Mensagem = obj.mensagem,
-          ImagemStr = obj.imagem
-        });
+          return View("EditarCapsula", new CapsulaDoTempoViewModel()
+          {
+            Mensagem = obj.mensagem,
+            ImagemStr = obj.imagem,
+            Chave = obj.chave,
+            DataAbertura = obj.dataAbertura,
+            Duracao = obj.duracao,
+            Email = obj.email
+          });
+        }
+        else
+        {
+          return View("CapsulaExistente", new CapsulaDoTempoViewModel()
+          {
+            Mensagem = obj.mensagem,
+            ImagemStr = obj.imagem
+          });
+        }
       }
       else if (result.StatusCode == System.Net.HttpStatusCode.BadRequest)
       {
         return View("Error");
-        //result.Content.
       }
       return View();
 

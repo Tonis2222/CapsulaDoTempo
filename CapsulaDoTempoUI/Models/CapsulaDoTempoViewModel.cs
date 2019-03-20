@@ -25,5 +25,7 @@ namespace CapsulaDoTempoUI.Models
 
     [Display(Name = "Email(opcional, permite modificar a capsula)")]
     public string Email { get; set; }
+
+    public string Chave { get; set; }
   }
 }
