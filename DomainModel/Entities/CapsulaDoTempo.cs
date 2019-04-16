@@ -1,17 +1,22 @@
 ﻿using System;
 
-namespace Modelo
+namespace DomainModel.Entities
 {
-  public class CapsulaDoTempo
+  public class CapsulaDoTempo : EntityBase
   {
-    public string Id { get; set; }
     public DateTime DataCriacao { get; set; }
     public DateTime DataAbertura { get; set; }
     public string Mensagem { get; set; }
     public string Imagem { get; set; }
     public DuracaoCapsula Duracao { set; get; }
+    public string Email { set; get; }
+    public string ChaveCapsula { set; get; }
 
-    public EstadoCapsula CalcularEstadoCapsula()
+    public bool Editavel { get { return !string.IsNullOrEmpty(Email) && Estado == EstadoCapsula.Criada && DataCriacao > DateTime.UtcNow.AddDays(-1); } }
+
+    public EstadoCapsula Estado { get { return CalcularEstadoCapsula(); } }
+
+    private EstadoCapsula CalcularEstadoCapsula()
     {
       if (DateTime.UtcNow < DataAbertura)
         return EstadoCapsula.Criada;

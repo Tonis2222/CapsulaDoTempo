@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Modelo
+namespace DomainModel.Entities
 {
   public enum DuracaoCapsula
   {

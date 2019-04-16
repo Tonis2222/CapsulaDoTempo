@@ -13,7 +13,7 @@ namespace Teste
     public void CriarCapsulaTeste()
     {
       var mockRepositorio = new Moq.Mock<DomainModel.Interfaces.Repositories.IRepositorioCapsulaDoTempo>();
-      var mockNotificador = new Moq.Mock<DomainModel.Interfaces.INotificacaoService>();
+      var mockNotificador = new Moq.Mock<DomainModel.Interfaces.Services.INotificacaoService>();
       var mockCrypto = new Moq.Mock<DomainModel.Interfaces.Services.ICryptoService>();
 
       var capsulaDoTempoService = new DomainService.CapsulaDoTempoService(mockRepositorio.Object, mockNotificador.Object, mockCrypto.Object);
@@ -41,7 +41,7 @@ namespace Teste
 
 
       var mockRepositorio = new RepositorioCapsulaParaTeste();
-      var mockNotificador = new Moq.Mock<DomainModel.Interfaces.INotificacaoService>();
+      var mockNotificador = new Moq.Mock<DomainModel.Interfaces.Services.INotificacaoService>();
       var mockCrypto = new Moq.Mock<DomainModel.Interfaces.Services.ICryptoService>();
 
       var capsulaDoTempoService = new DomainService.CapsulaDoTempoService(mockRepositorio, mockNotificador.Object, mockCrypto.Object);
@@ -93,7 +93,7 @@ namespace Teste
 
 
       var mockRepositorio = new RepositorioCapsulaParaTeste();
-      var mockNotificador = new Moq.Mock<DomainModel.Interfaces.INotificacaoService>();
+      var mockNotificador = new Moq.Mock<DomainModel.Interfaces.Services.INotificacaoService>();
       var mockCrypto = new Moq.Mock<DomainModel.Interfaces.Services.ICryptoService>();
 
       var capsulaDoTempoService = new DomainService.CapsulaDoTempoService(mockRepositorio, mockNotificador.Object, mockCrypto.Object);
@@ -143,7 +143,7 @@ namespace Teste
     public void BuscarCapsulaAbertaTeste()
     {
       var mockRepositorio = new RepositorioCapsulaParaTeste();
-      var mockNotificador = new Moq.Mock<DomainModel.Interfaces.INotificacaoService>();
+      var mockNotificador = new Moq.Mock<DomainModel.Interfaces.Services.INotificacaoService>();
       var mockCrypto = new Moq.Mock<DomainModel.Interfaces.Services.ICryptoService>();
 
       var capsulaDoTempoService = new DomainService.CapsulaDoTempoService(mockRepositorio, mockNotificador.Object, mockCrypto.Object);
@@ -175,7 +175,7 @@ namespace Teste
     public void BuscarCapsulaFechadaTeste()
     {
       var mockRepositorio = new RepositorioCapsulaParaTeste();
-      var mockNotificador = new Moq.Mock<DomainModel.Interfaces.INotificacaoService>();
+      var mockNotificador = new Moq.Mock<DomainModel.Interfaces.Services.INotificacaoService>();
       var mockCrypto = new Moq.Mock<DomainModel.Interfaces.Services.ICryptoService>();
 
       var capsulaDoTempoService = new DomainService.CapsulaDoTempoService(mockRepositorio, mockNotificador.Object, mockCrypto.Object);
