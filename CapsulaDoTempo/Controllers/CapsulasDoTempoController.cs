@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using DomainModel.Interfaces;
 using DomainModel.Interfaces.Repositories;
+using DomainModel.Interfaces.Services;
 using DomainService;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,17 +17,19 @@ namespace CapsulaDoTempo.Controllers
   {
     IRepositorioCapsulaDoTempo repositorio;
     INotificacaoService notificacao;
+    ICryptoService cryptoService;
 
-    public CapsulasDoTempoController(IRepositorioCapsulaDoTempo _repositorio, INotificacaoService _notificacao)
+    public CapsulasDoTempoController(IRepositorioCapsulaDoTempo _repositorio, INotificacaoService _notificacao, ICryptoService _cryptoService)
     {
       repositorio = _repositorio;
       notificacao = _notificacao;
+      cryptoService = _cryptoService;
     }
 
     [HttpGet("{id}")]
     public async Task<ActionResult> Get(string id, string chave = null)
     {
-      var ds = new CapsulaDoTempoService(repositorio,notificacao);
+      var ds = new CapsulaDoTempoService(repositorio,notificacao, cryptoService);
 
       var resultado = new ResultadoBuscaCapsula();
 
@@ -58,7 +61,7 @@ namespace CapsulaDoTempo.Controllers
     public async Task<ActionResult> Post(string id, [FromBody]DomainModel.Entities.CapsulaDoTempo capsula)
     {
 
-      var ds = new CapsulaDoTempoService(repositorio, notificacao);
+      var ds = new CapsulaDoTempoService(repositorio, notificacao, cryptoService);
       var resultado = await ds.CriarCapsula(id, capsula);
 
       switch (resultado.ResultadoCriacao)
@@ -77,7 +80,7 @@ namespace CapsulaDoTempo.Controllers
     public async Task<ActionResult> Put(string id, [FromBody]DomainModel.Entities.CapsulaDoTempo capsula)
     {
 
-      var ds = new CapsulaDoTempoService(repositorio, notificacao);
+      var ds = new CapsulaDoTempoService(repositorio, notificacao, cryptoService);
       var resultado = await ds.AlterarCapsulaDoTempo(id, capsula);
 
       switch (resultado)
@@ -94,7 +97,7 @@ namespace CapsulaDoTempo.Controllers
     [HttpDelete("{id}")]
     public async Task<ActionResult> Delete(string id, [FromBody]DomainModel.Entities.CapsulaDoTempo capsula)
     {
-      var ds = new CapsulaDoTempoService(repositorio, notificacao);
+      var ds = new CapsulaDoTempoService(repositorio, notificacao, cryptoService);
 
       var resultado = await ds.ExcluirCapsuladoTempo(id,capsula.ChaveCapsula);
       

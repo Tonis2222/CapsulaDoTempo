@@ -1,4 +1,5 @@
 ﻿using DomainModel.Entities;
+using DomainModel.Interfaces.Services;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System;
 using System.Collections.Generic;
@@ -7,11 +8,11 @@ using System.Text;
 
 namespace DomainService
 {
-  public static class CriptoService
+  public class CryptoService : ICryptoService
   {
     private const string CHAVE_PRIVADA = "CAPSULA_DO_TEMPO";
 
-    public static string Criptografar(string id, string conteudo)
+    public string Criptografar(string id, string conteudo)
     {
       return Convert.ToBase64String(KeyDerivation.Pbkdf2(
         password: conteudo,

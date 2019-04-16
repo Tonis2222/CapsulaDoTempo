@@ -33,7 +33,7 @@ namespace CapsulaDoTempoUI.Controllers
 
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> Index(string id,string chave = null)
+    public async Task<IActionResult> Index(string id, string chave = null)
     {
       if (string.IsNullOrWhiteSpace(id))
       {
@@ -156,6 +156,64 @@ namespace CapsulaDoTempoUI.Controllers
       return await Index(id);
     }
 
+    [ValidateRecaptcha]
+    [HttpPut("{id}")]
+    public async Task<IActionResult> EditarCapsula(string id, string chave, [FromForm] CapsulaDoTempoViewModel capsula)
+    {
+
+      string strImagem = string.Empty;
+      if (capsula.Imagem != null)
+      {
+        var str = capsula.Imagem.OpenReadStream();
+
+        byte[] img = new byte[capsula.Imagem.Length];
+
+        using (var memoryStream = new MemoryStream())
+        {
+          await capsula.Imagem.CopyToAsync(memoryStream);
+          img = memoryStream.ToArray();
+        }
+        strImagem = Convert.ToBase64String(img);
+      }
+
+      TimeZoneInfo tz;
+      try
+      {
+        tz = TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time");
+      }
+      catch (TimeZoneNotFoundException)
+      {
+        tz = TimeZoneInfo.FindSystemTimeZoneById("America/Sao_Paulo");
+      }
+
+      DateTime dataUTC = TimeZoneInfo.ConvertTimeToUtc(capsula.DataAbertura, tz);
+
+      var ipCliente = this.Request.HttpContext.Connection.RemoteIpAddress;
+
+
+      CapsulaDto caps = new CapsulaDto()
+      {
+        DataAbertura = dataUTC,
+        Mensagem = capsula.Mensagem,
+        Imagem = strImagem,
+        Duracao = capsula.Duracao,
+        Email = capsula.Email,
+        Ip = ipCliente.ToString(),
+        Chave = capsula.Chave
+
+      };
+
+      HttpClient cli = new HttpClient();
+      var result = await cli.PutAsync(new Uri(urlApi + id), new StringContent(JsonConvert.SerializeObject(caps), Encoding.UTF8, "application/json"));
+
+      if (result.StatusCode == System.Net.HttpStatusCode.BadRequest)
+      {
+        ViewBag.Mensagem = await result.Content.ReadAsStringAsync();
+      }
+
+      return await Index(id);
+    }
+
     public IActionResult Error()
     {
       return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
@@ -169,6 +227,7 @@ namespace CapsulaDoTempoUI.Controllers
       public DuracaoCapsula Duracao { get; internal set; }
       public string Email { get; internal set; }
       public string Ip { get; internal set; }
+      public string Chave { get; internal set; }
     }
   }
 }

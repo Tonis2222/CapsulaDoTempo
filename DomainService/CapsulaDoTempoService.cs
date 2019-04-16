@@ -1,6 +1,7 @@
 ﻿using DomainModel.Entities;
 using DomainModel.Interfaces;
 using DomainModel.Interfaces.Repositories;
+using DomainModel.Interfaces.Services;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,11 +13,13 @@ namespace DomainService
   {
     IRepositorioCapsulaDoTempo repositorio;
     INotificacaoService notificacao;
+    ICryptoService cryptoService;
 
-    public CapsulaDoTempoService(IRepositorioCapsulaDoTempo _repositorio, INotificacaoService _notificacao)
+    public CapsulaDoTempoService(IRepositorioCapsulaDoTempo _repositorio, INotificacaoService _notificacao, ICryptoService _cryptoService)
     {
       repositorio = _repositorio;
       notificacao = _notificacao;
+      cryptoService = _cryptoService;
     }
 
     public async Task<ResultadoBuscaCapsula> BuscarCapsulaPorId(string id)
@@ -83,7 +86,7 @@ namespace DomainService
 
       if (!string.IsNullOrEmpty(capsula.Email))
       {
-        capsula.ChaveCapsula = CriptoService.Criptografar(capsula.Id,capsula.Email);
+        capsula.ChaveCapsula = cryptoService.Criptografar(capsula.Id,capsula.Email);
       }
 
       var c = await repositorio.RecuperarCapsula(capsula.Id);

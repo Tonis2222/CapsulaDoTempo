@@ -26,8 +26,6 @@ namespace CapsulaDoTempoUI
       services.AddMvc();
       services.AddRecaptcha(new RecaptchaOptions
       {
-        SiteKey = "6LeWc5QUAAAAADqPDP3-ZaIH_bxzpQNxSJhZht4a",
-        SecretKey = "6LeWc5QUAAAAAHMrhYcJKfSJkk3jfGnc6_eJJBsN"
       });
     }
 

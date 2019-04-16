@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using DomainModel.Interfaces;
 using DomainModel.Interfaces.Repositories;
+using DomainModel.Interfaces.Services;
+using DomainService;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -25,11 +27,12 @@ namespace CapsulaDoTempo
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
-      string cnn = @"mongodb://capsuladotempomongo:pa0gMV43v35N2R7fWfQTy2fhVT8SrTuqYXFJo5EHbMeFsaoySfH8BiYyY1JjmKqFlG1BgRyCcattKavcAWTlMQ==@capsuladotempomongo.documents.azure.com:10255/?ssl=true&replicaSet=globaldb";
-      string senhaGmail = "2794xxXX";
+      string cnn = @"";
+      string senhaGmail = "";
 
       services.AddTransient<IRepositorioCapsulaDoTempo, RepositorioCapsulaDoTempo>(a => new RepositorioCapsulaDoTempo(cnn));
       services.AddTransient<INotificacaoService, NotificadorGmail>(a => new NotificadorGmail(senhaGmail));
+      services.AddTransient<ICryptoService, CryptoService>(a => new CryptoService());
       services.AddMvc();
     }
 
